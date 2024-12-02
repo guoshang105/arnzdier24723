@@ -3,6 +3,7 @@
 # renew.sh 用于在线同步最新的 backup.sh 和 restore.sh 脚本
 # 如是 IPv6 only 或者大陆机器，需要 Github 加速网，可自行查找放在 GH_PROXY 处 ，如 https://mirror.ghproxy.com/ ，能不用就不用，减少因加速网导致的故障。
 
+GH_PROXY=
 WORK_DIR=
 TEMP_DIR=
 
@@ -22,7 +23,7 @@ mkdir -p $TEMP_DIR
 for i in {renew,backup,restore}; do
   if [ -s $WORK_DIR/$i.sh ]; then
     sed -n '1,/^########/p' $WORK_DIR/$i.sh > $TEMP_DIR/$i.sh
-    wget -qO- ${GH_PROXY}https://raw.githubusercontent.com/guoshang105/arnzdier24723/main/template/$i.sh | sed '1,/^########/d' >> $TEMP_DIR/$i.sh
+    wget -qO- ${GH_PROXY}https://raw.githubusercontent.com/fscarmen2/Argo-Nezha-Service-Container/main/template/$i.sh | sed '1,/^########/d' >> $TEMP_DIR/$i.sh
     [ $(wc -l $TEMP_DIR/$i.sh | awk '{print $1}') -gt 20 ] && chmod +x $TEMP_DIR/$i.sh && mv -f $TEMP_DIR/$i.sh $WORK_DIR/ && info "\n Update $i.sh Successful. \n" || warning "\n Update $i.sh failed.\n" 
   fi
 done
